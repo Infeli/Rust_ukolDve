@@ -1,7 +1,6 @@
+use slug::slugify;
 use std::env;
 use std::io;
-
-use slug::slugify;
 
 fn vypis_po_znaku(input: &str) {
     for c in input.chars() {
@@ -20,6 +19,11 @@ fn vypis_delku(input: &str) {
     }
 }
 
+fn vypis_pozpatku(input: &str) {
+    let po_zpatku = input.chars().rev().collect::<String>();
+    println!("Pozpátku: {}", po_zpatku);
+}
+
 fn main() {
     let mut args: Vec<String> = env::args().collect();
     println!("Zadej text: ");
@@ -29,8 +33,8 @@ fn main() {
         .expect("Failed to read line");
 
     // vytvoření proměné slug na slugify
-    let forSlug = input.clone();
-    let slug = slugify(forSlug);
+    let for_slug = input.clone();
+    let slug = slugify(for_slug);
 
     //pushnutí inputu do Vec
     args.push(input.trim().to_string());
@@ -40,14 +44,16 @@ fn main() {
 
     //Menu
     println!(
-        "   Co s ním chceš dělat? (vyber z uvozovek)
-    ------------------------------------------
-    'lowercase' = převede text na lowercase,
-    'uppercase' = převede text na uppercase,
-    'no-spaces' = odebere mezery, 
-    'slugify' = konvertuje text do slug,
-    'znaky' = vypíše text do znaků,
-    'delka' = vypíše délku řetězce"
+        "
+        Vyber úpravu ... (vyber z uvozovek)
+        ------------------------------------------
+        'lowercase' = převede text na lowercase,
+        'uppercase' = převede text na uppercase,
+        'no-spaces' = odebere mezery, 
+        'slugify' = konvertuje text do slug,
+        'znaky' = vypíše text do znaků,
+        'delka' = vypíše délku řetězce,
+        'zpetne' = vypíše pozpátku"
     );
 
     // volba a zpracování volby
@@ -66,6 +72,7 @@ fn main() {
         "slugify" => println!("Do slug: {}", slugify(slug)),
         "znaky" => println!("{:#?}", vypis_po_znaku(&args[1])),
         "delka" => println!("{:#?}", vypis_delku(&args[1])),
+        "zpetne" => println!("{:#?}", vypis_pozpatku(&args[1])),
         _ => println!("Neplatná volba!"),
     }
 }
